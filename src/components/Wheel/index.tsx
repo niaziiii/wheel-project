@@ -6,13 +6,16 @@ const Wheel = () => {
   const playWheel = () => {
     setIsRunning(!isRunning);
   };
+
   return (
-    <div className="flex">
-      <div
-        className={`wheel ${isRunning && "play-animation"}`}
-        onClick={playWheel}
-      >
-        <img src="/wheel-2.png" alt="wheel" className="wheel-image" />
+    <div className="mt-[5rem] flex items-center justify-center mb-20">
+      <div className="flex">
+        <div
+          className={`wheel ${isRunning && "play-animation"}`}
+          onClick={playWheel}
+        >
+          <img src="/wheel-2.png" alt="wheel" className="wheel-image" />
+        </div>
       </div>
     </div>
   );

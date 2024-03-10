@@ -4,12 +4,14 @@ import { ICountry, countryData } from "../utils/constant";
 type AppState = {
   loading: boolean;
   country: ICountry;
+  isModalOpen: boolean;
 };
 
 // Action types
 export const actionTypes = {
   SET_LOADING: "SET_LOADING",
   SET_COUNTRY: "SET_COUNTRY",
+  SET_MODEL: "SET_MODEL",
 } as const;
 
 export type Action = {
@@ -23,7 +25,8 @@ const contextReducer = (state: AppState, action: Action): AppState => {
       return { ...state, loading: action.payload as boolean };
     case actionTypes.SET_COUNTRY:
       return { ...state, country: action.payload as ICountry };
-
+    case actionTypes.SET_MODEL:
+      return { ...state, isModalOpen: action.payload as boolean };
     default:
       return state;
   }
@@ -32,6 +35,7 @@ const contextReducer = (state: AppState, action: Action): AppState => {
 const initialAppState: AppState = {
   loading: false,
   country: countryData[1],
+  isModalOpen: true,
 };
 
 export const AppContext = createContext<
