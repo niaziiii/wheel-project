@@ -32,29 +32,38 @@ const WheelSpinner: React.FC = () => {
 
   return (
     <div id="wrapper">
-      <div id="wheel">
-        <div id="inner-wheel">
-          <div className="sec">
-            <span className="fa fa-bell-o"></span>
+      <div id="wheel-container">
+        <div id="wheel">
+          <div id="inner-wheel">
+            <div className="sec ">
+              <span className="fa fa-bell-o font-bold text-[#79200e] left-[-47px]">
+                une Margherita
+              </span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-bell-o font-bold text-white left-[-30px]">
+                un Tiramisu
+              </span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-bell-o font-bold text-[#79200e] left-[-25px]">
+                un spritz
+              </span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-bell-o font-bold text-white left-[-23px]">
+                un cafe
+              </span>
+            </div>
           </div>
-          <div className="sec">
-            <span className="fa fa-comment-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-smile-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-heart-o"></span>
-          </div>
-        </div>
 
-        <div id="spin" onClick={spinWheel}>
-          <div id="inner-spin"></div>
-        </div>
+          <div id="spin" onClick={spinWheel}>
+            <div id="inner-spin"></div>
+          </div>
 
-        <div id="shine"></div>
+          <div id="shine"></div>
+        </div>
       </div>
-
       <div id="txt"></div>
     </div>
   );

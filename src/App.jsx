@@ -19,6 +19,10 @@ function App() {
       <InfoForm />
       <Wheel />
       <WheelSpinner />
+      <br />
+      <br />
+      <br />
+      <br />
       <Footer />
     </div>
   );

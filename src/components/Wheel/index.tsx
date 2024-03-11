@@ -8,7 +8,7 @@ const Wheel = () => {
   };
 
   return (
-    <div className="mt-[5rem] flex items-center justify-center mb-20">
+    <div className="mt-[5rem] flex items-center justify-center">
       <div className="flex">
         <div
           className={`wheel ${isRunning && "play-animation"}`}
