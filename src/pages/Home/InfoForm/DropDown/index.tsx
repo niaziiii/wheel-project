@@ -4,9 +4,9 @@ import {
   DropdownChangeEvent,
 } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
-import { ICountry, countryData } from "../../utils/constant";
+import { ICountry, countryData } from "../../../../utils/constant";
 import InputTextField from "./Input";
-import { useAppContext, actionTypes } from "../../context";
+import { useAppContext, actionTypes } from "../../../../context";
 
 export default function Dropdown() {
   const { dispatch, state } = useAppContext();

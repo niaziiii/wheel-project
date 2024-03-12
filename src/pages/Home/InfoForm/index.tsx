@@ -1,7 +1,7 @@
 import React from "react";
-import InputTextField from "../Input";
-import { countryData } from "../../utils/constant";
-import Dropdown from "../DropDown";
+import InputTextField from "../../../components/Input";
+import { countryData } from "../../../utils/constant";
+import Dropdown from "./DropDown/";
 
 export default function InfoForm() {
   return (

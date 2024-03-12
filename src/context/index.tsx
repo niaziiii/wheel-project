@@ -5,6 +5,7 @@ type AppState = {
   loading: boolean;
   country: ICountry;
   isModalOpen: boolean;
+  isInfoModalOpen: boolean;
 };
 
 // Action types
@@ -12,6 +13,7 @@ export const actionTypes = {
   SET_LOADING: "SET_LOADING",
   SET_COUNTRY: "SET_COUNTRY",
   SET_MODEL: "SET_MODEL",
+  SET_INFO_MODEL: "SET_INFO_MODEL",
 } as const;
 
 export type Action = {
@@ -27,6 +29,8 @@ const contextReducer = (state: AppState, action: Action): AppState => {
       return { ...state, country: action.payload as ICountry };
     case actionTypes.SET_MODEL:
       return { ...state, isModalOpen: action.payload as boolean };
+    case actionTypes.SET_INFO_MODEL:
+      return { ...state, isInfoModalOpen: action.payload as boolean };
     default:
       return state;
   }
@@ -36,6 +40,7 @@ const initialAppState: AppState = {
   loading: false,
   country: countryData[1],
   isModalOpen: true,
+  isInfoModalOpen: true,
 };
 
 export const AppContext = createContext<
