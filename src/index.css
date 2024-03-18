@@ -29,16 +29,16 @@
   border-radius: 100%;
 }
 
-.play-animation {
-  animation: rotate 2s linear infinite;
-}
-
 .wheel-image {
   position: absolute;
   top: 0%;
   left: 50.3%;
   width: 100%;
   transform: translate(-50%);
+}
+
+.play-animation {
+  animation: rotate 2s linear infinite;
 }
 
 @keyframes rotate {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import InputTextField from "../../../components/Input";
 import Dropdown from "./DropDown/";
-import { useAppContext } from "../../../context";
+import { useAppContext, actionTypes } from "../../../context";
 
 export default function InfoForm() {
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const [formState, setFormState] = useState({
     firstName: "",
     email: "",
@@ -29,7 +29,8 @@ export default function InfoForm() {
       ...formState,
       contactNumber: state.contactNumber,
     };
-    console.log({ formState });
+    console.log({ params, formState });
+    dispatch({ type: actionTypes.SET_WHEEL, payload: true });
   };
   return (
     <div className="mt-16" id="play">

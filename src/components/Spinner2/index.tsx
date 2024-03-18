@@ -1,40 +1,36 @@
-import React, { useState } from "react";
 import "./style.css";
+import React, { useEffect, useState } from "react";
+import { useAppContext, actionTypes } from "../../context";
 
 const WheelSpinner: React.FC = () => {
-  const [degree, setDegree] = useState<number>(1800);
-  const [clicks, setClicks] = useState<number>(0);
+  const { state, dispatch } = useAppContext();
+  const [rotation, setRotation] = useState(0);
+  const animationSpeed = 2000;
 
-  const spinWheel = () => {
-    // Add 1 every click
-    setClicks(clicks + 1);
+  useEffect(() => {
+    let animationInterval: any;
 
-    // Multiply the degree by number of clicks
-    const newDegree: number = degree * clicks;
-    const extraDegree: number = Math.floor(Math.random() * (360 - 1 + 1)) + 1;
-    const totalDegree: number = newDegree + extraDegree;
-
-    // Update the rotation of the wheel
-    const innerWheel = document.getElementById("inner-wheel");
-    if (innerWheel) {
-      innerWheel.style.transform = `rotate(${totalDegree}deg)`;
+    if (state.isWheelRunning) {
+      animationInterval = setInterval(() => {
+        setRotation((prevRotation) => prevRotation + 1);
+      }, animationSpeed / 360);
+    } else {
+      clearInterval(animationInterval);
     }
 
-    // Tilt the spin button
-    const spinButton = document.getElementById("spin");
-    if (spinButton) {
-      spinButton.classList.add("spin");
-      setTimeout(() => {
-        spinButton.classList.remove("spin");
-      }, 100);
-    }
+    return () => {
+      clearInterval(animationInterval);
+    };
+  }, [state.isWheelRunning]);
+
+  const playWheel = () => {
+    dispatch({ type: actionTypes.SET_WHEEL, payload: !state.isWheelRunning });
   };
-
   return (
     <div id="wrapper">
       <div id="wheel-container">
         <div id="wheel">
-          <div id="inner-wheel">
+          <div id="inner-wheel" style={{ transform: `rotate(${rotation}deg)` }}>
             <div className="sec ">
               <span className="fa fa-bell-o font-bold text-[#79200e] left-[-47px]">
                 une Margherita
@@ -57,7 +53,7 @@ const WheelSpinner: React.FC = () => {
             </div>
           </div>
 
-          <div id="spin" onClick={spinWheel}>
+          <div id="spin" onClick={playWheel}>
             <div id="inner-spin"></div>
           </div>
 

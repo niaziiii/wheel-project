@@ -7,6 +7,7 @@ type AppState = {
   isModalOpen: boolean;
   isInfoModalOpen: boolean;
   contactNumber: string | number;
+  isWheelRunning: boolean;
 };
 
 // Action types
@@ -16,6 +17,7 @@ export const actionTypes = {
   SET_MODEL: "SET_MODEL",
   SET_INFO_MODEL: "SET_INFO_MODEL",
   SET_CONTAC_NUMBER: "SET_CONTAC_NUMBER",
+  SET_WHEEL: "SET_WHEEL",
 } as const;
 
 export type Action = {
@@ -35,6 +37,8 @@ const contextReducer = (state: AppState, action: Action): AppState => {
       return { ...state, isInfoModalOpen: action.payload as boolean };
     case actionTypes.SET_CONTAC_NUMBER:
       return { ...state, contactNumber: action.payload as number };
+    case actionTypes.SET_WHEEL:
+      return { ...state, isWheelRunning: action.payload as boolean };
     default:
       return state;
   }
@@ -46,6 +50,7 @@ const initialAppState: AppState = {
   isModalOpen: true,
   isInfoModalOpen: true,
   contactNumber: "",
+  isWheelRunning: false,
 };
 
 export const AppContext = createContext<
