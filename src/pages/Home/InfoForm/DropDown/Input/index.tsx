@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { useAppContext } from "../../../../../context";
+import { useAppContext, actionTypes } from "../../../../../context";
+
 export default function InputTextField() {
-  const [value, setValue] = useState<string>("sdfsd");
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const { country } = state;
 
   return (
@@ -12,10 +12,13 @@ export default function InputTextField() {
       <div className="absolute top-[28%] left-3">{country.name} |</div>
       <InputText
         type="number"
-        value={value}
+        value={state.contactNumber as string}
         className="w-full pl-14"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setValue(e.target.value);
+          dispatch({
+            type: actionTypes.SET_CONTAC_NUMBER,
+            payload: e.target.value,
+          });
         }}
         pt={Tailwind.inputtext}
         placeholder="Enter number"

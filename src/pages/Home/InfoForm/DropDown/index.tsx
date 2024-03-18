@@ -4,7 +4,7 @@ import {
   DropdownChangeEvent,
 } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
-import { ICountry, countryData } from "../../../../utils/constant";
+import { countryData } from "../../../../utils/constant";
 import InputTextField from "./Input";
 import { useAppContext, actionTypes } from "../../../../context";
 

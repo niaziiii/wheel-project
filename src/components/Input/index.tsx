@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 
 export default function InputTextField({
   type = "text",
   placeholder,
+  value = "",
+  handleChange,
 }: {
-  type?: string;
+  value: string;
   placeholder: string;
+  handleChange?: any;
+  type: string;
 }) {
-  const [value, setValue] = useState<string>("sdfsd");
-
   return (
     <div className="card flex justify-content-center w-full">
       <InputText
@@ -18,7 +20,7 @@ export default function InputTextField({
         value={value}
         className="w-full "
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
+          handleChange(e.target.value)
         }
         pt={Tailwind.inputtext}
         placeholder={placeholder}

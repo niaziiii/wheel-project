@@ -3,36 +3,46 @@ import React from "react";
 const HeroSection = () => {
   return (
     <>
-      <div className="h-[70vh] relative">
+      <div className="h-[40vh] md:h-[80vh] relative flex items-center justify-center">
         <img
           src="/bg.png"
           alt=""
-          className="w-full h-[70vh] absolute top-0 left-0"
+          className="w-full h-[40vh] md:h-[80vh] object-fill absolute top-0 left-0"
         />
-        <div
-          style={{ color: "white" }}
-          className="relative text=white z-10 flex flex-col items-center justify-center h-full"
-        >
-          <h1 className="text-4xl font-bold">
+        <div className="relative mt-3 md:mt-0 text-white z-10 flex flex-col items-center justify-center h-full">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-center md:leading-[3.5rem]">
             Une Margher <br />
             ça te di
           </h1>
-          <p className="mt-3">Faites tourner la roue et gap</p>
+          <p className="mt-3 md:text-xl">Faites tourner la roue et gap</p>
           <div className="mt-5 ">
-            <button className="outline-none border-none bg-red-500 hover:bg-red-600  py-2 px-5 rounded-lg">
+            <a
+              href="#play"
+              className="outline-none border-none bg-wheelRed hover:bg-wheelRed/90  py-1 md:py-3 md:font-bold px-2 md:px-8 rounded-lg"
+            >
               I want to play
-            </button>
+            </a>
           </div>
         </div>
       </div>
-      <div className="py-4 bg-gray-200 flex items-center justify-end">
-        <p>
-          Jeu <b className="text-red-500">100%</b> Gratuit!-Jeu{" "}
-          <b className="text-red-500">1</b>
-        </p>
-      </div>
+      <AnimatedText />
     </>
   );
 };
 
 export default HeroSection;
+
+const AnimatedText = () => {
+  return (
+    <div className="flex w-full py-1 md:py-3 bg-gray-200 items-center justify-end relative overflow-hidden">
+      <article className="w-full text-lg md:text-2xl font-bold flex items-center justify-center">
+        <marquee behavior="scroll" direction="left">
+          <p>
+            <b className="text-wheelRed">100%</b> Gratuit!-Jeu{" "}
+            <b className="text-wheelRed">1</b>
+          </p>
+        </marquee>
+      </article>
+    </div>
+  );
+};
