@@ -1,7 +1,7 @@
 import React from "react";
 import HeroSection from "./HeroSection";
 import InfoForm from "./Form";
-import WheelSpinner from "../../components/Spinner2";
+import WheelSpinner from "../../components/Spinner";
 import { actionTypes, useAppContext } from "../../context";
 import ShowInfoModel from "./ShowInfoModel";
 

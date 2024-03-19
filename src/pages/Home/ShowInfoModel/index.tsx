@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Lottie from "lottie-react";
+import lotiANim from "./loading-animation.json";
 
 const data = [
   "You will be redirected to our Google page",
@@ -25,21 +27,32 @@ export default function ShowInfoModel({ close }: { close: () => void }) {
         }}
       >
         {clicks == 0 ? (
-          <img src="/coin-box.png" alt="coin-box" />
+          <img
+            src="/napolitano.jpeg"
+            className="w-[10rem] md:w-[15rem] rounded-md"
+            alt="napolitano"
+          />
         ) : (
-          <img src="/loading.png" alt="loading" />
+          <div className="w-[10rem] md:w-[15rem] h-[10rem] md:h-[15rem]">
+            <Lottie
+              animationData={lotiANim}
+              loop={true}
+              className="w-[10rem] md:w-[15rem] h-[10rem] md:h-[15rem] scale-125"
+            />
+          </div>
         )}
-        <h1 className="font-bold text-2xl text-center">
+
+        <h1 className="font-bold text-lg md:text-2xl text-center">
           Soutenez-nous en nous <br />
           laissant un avis ! <b className="text-red-500">❤️</b>
         </h1>
         <ul className="flex flex-col gap-2">
           {data.map((d, i) => (
             <li key={d} className="flex items-center gap-3">
-              <div className="h-[2rem] w-[2rem] min-w-[2rem] rounded-full bg-black text-white flex items-center justify-center">
+              <div className="h-[1.5rem] md:h-[2rem] w-[1.5rem] md:w-[2rem] min-w-[1rem] md:min-w-[2rem] rounded-full bg-black text-white flex items-center justify-center">
                 {i + 1}
               </div>
-              <p className="font-semibold">{d}</p>
+              <p className="md:font-semibold text-sm md:text-lg">{d}</p>
             </li>
           ))}
         </ul>

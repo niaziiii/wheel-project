@@ -2,10 +2,9 @@ import React from "react";
 import Footer from "../../components/Footer";
 import HeroSection from "./HeroSection";
 import InfoForm from "./InfoForm";
-import Wheel from "../../components/Wheel";
 import { useAppContext, actionTypes } from "../../context";
 import ShowInfoModel from "./ShowInfoModel";
-import WheelSpinner from "../../components/Spinner2";
+import WheelSpinner from "../../components/Spinner";
 
 export default function Home() {
   const { state, dispatch } = useAppContext();
@@ -18,7 +17,6 @@ export default function Home() {
         {state.isModalOpen && <ShowInfoModel close={closeModal} />}
         <HeroSection />
         <InfoForm />
-        <Wheel />
         <WheelSpinner />
         <Footer />
       </div>

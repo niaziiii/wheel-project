@@ -14,6 +14,7 @@ const WheelSpinner: React.FC = () => {
       animationInterval = setInterval(() => {
         setRotation((prevRotation) => prevRotation + 1);
       }, animationSpeed / 360);
+      setTimeout(stopWheel, 5000);
     } else {
       clearInterval(animationInterval);
     }
@@ -23,11 +24,11 @@ const WheelSpinner: React.FC = () => {
     };
   }, [state.isWheelRunning]);
 
-  const playWheel = () => {
-    dispatch({ type: actionTypes.SET_WHEEL, payload: !state.isWheelRunning });
+  const stopWheel = () => {
+    dispatch({ type: actionTypes.SET_WHEEL, payload: false });
   };
   return (
-    <div id="wrapper">
+    <div id="wrapper" className="py-10">
       <div id="wheel-container">
         <div id="wheel">
           <div id="inner-wheel" style={{ transform: `rotate(${rotation}deg)` }}>
@@ -53,8 +54,11 @@ const WheelSpinner: React.FC = () => {
             </div>
           </div>
 
-          <div id="spin" onClick={playWheel}>
+          <div id="spin">
             <div id="inner-spin"></div>
+            <div className="absolute -z-0 overflow-hidden w-[68px] h-[68px] bg-white rounded-full">
+              <img src="/wheel-logo.png" alt="wheel-logo" />
+            </div>
           </div>
 
           <div id="shine"></div>
