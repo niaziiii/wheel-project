@@ -36,6 +36,7 @@ const AnimatedText = () => {
     <div className="flex w-[100%] m-w-[100%] py-1 md:py-3 bg-gray-200 items-center justify-end relative overflow-hidden md:h-[10vh]">
       <article className="w-[100%] m-w-[100%] text-lg md:text-2xl font-bold flex items-center justify-center">
         <marquee
+          scrollamount="15"
           behavior="scroll"
           direction="left"
           className="w-[100%] m-w-[100%]"

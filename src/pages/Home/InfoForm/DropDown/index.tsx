@@ -8,7 +8,7 @@ import { countryData } from "../../../../utils/constant";
 import InputTextField from "./Input";
 import { useAppContext, actionTypes } from "../../../../context";
 
-export default function Dropdown() {
+export default function Dropdown({ setErrors }: { setErrors: any }) {
   const { dispatch, state } = useAppContext();
 
   const handleChangeSelected = (e: DropdownChangeEvent) => {
@@ -42,7 +42,7 @@ export default function Dropdown() {
         className="w-[5rem] max-w-[5rem] border-2  outline-none  text-gray-400"
         pt={Tailwind.dropdown as any}
       />
-      <InputTextField />
+      <InputTextField setErrors={setErrors} />
     </div>
   );
 }

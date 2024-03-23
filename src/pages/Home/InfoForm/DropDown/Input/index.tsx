@@ -3,7 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { useAppContext, actionTypes } from "../../../../../context";
 
-export default function InputTextField() {
+export default function InputTextField({ setErrors }: { setErrors: any }) {
   const { state, dispatch } = useAppContext();
   const { country } = state;
 
@@ -13,12 +13,18 @@ export default function InputTextField() {
       <InputText
         type="number"
         value={state.contactNumber as string}
-        className="w-full pl-14"
+        className="w-full pl-14 !text-black"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           dispatch({
             type: actionTypes.SET_CONTAC_NUMBER,
             payload: e.target.value,
           });
+          setErrors((prev) => ({
+            ...prev,
+            contact: {
+              name: null,
+            },
+          }));
         }}
         pt={Tailwind.inputtext}
         placeholder="Enter number"

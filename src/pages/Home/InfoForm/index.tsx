@@ -4,17 +4,28 @@ import Dropdown from "./DropDown/";
 import { useAppContext, actionTypes } from "../../../context";
 import { Checkbox } from "primereact/checkbox";
 
+const initialState = {
+  firstName: "",
+  email: "",
+  contact: {
+    code: "",
+    number: "",
+  },
+  reciveGifts: false,
+};
+const initialStateErrors = {
+  firstName: null,
+  email: null,
+  contact: {
+    number: null,
+  },
+  reciveGifts: null,
+};
+
 export default function InfoForm() {
   const { state, dispatch } = useAppContext();
-  const [formState, setFormState] = useState({
-    firstName: "",
-    email: "",
-    contact: {
-      code: "",
-      number: "",
-    },
-    reciveGifts: false,
-  });
+  const [formState, setFormState] = useState(initialState);
+  const [errors, setErrors] = useState(initialStateErrors);
 
   const handleChange = (data: any, key: string) => {
     setFormState((prev) => ({
@@ -23,8 +34,33 @@ export default function InfoForm() {
     }));
   };
 
+  const checkFieldsVerification = () => {
+    let err: any = { ...initialStateErrors };
+    let errors = false;
+
+    if (!formState.firstName) {
+      err.firstName = "Enter your name";
+      errors = true;
+    }
+    if (!formState.email) {
+      err.email = "Enter your email address";
+      errors = true;
+    }
+    if (!formState.contact.number) {
+      err.contact.number = "Enter your number";
+      errors = true;
+    }
+    setErrors(err);
+    return errors;
+  };
+
   const submitHandler = (e: any) => {
     e?.preventDefault();
+    const useCanNotPlay = checkFieldsVerification();
+    console.log({ useCanNotPlay });
+
+    if (useCanNotPlay) return;
+
     const params = {
       ...formState,
       contactNumber: state.contactNumber,
@@ -46,18 +82,39 @@ export default function InfoForm() {
           <InputTextField
             type="text"
             value={formState.firstName}
-            handleChange={(value: any) => handleChange(value, "firstName")}
+            handleChange={(value: any) => {
+              handleChange(value, "firstName");
+              setErrors((prev) => ({ ...prev, firstName: null }));
+            }}
             placeholder="First Name"
           />
+          {errors.firstName && (
+            <p className="text-wheelRed text-[13px] ml-2 mt-1">
+              {errors.firstName}
+            </p>
+          )}
           <br />
-          <Dropdown />
+          <Dropdown setErrors={setErrors} />
+          {errors.contact.number && (
+            <p className="text-wheelRed text-[13px] ml-2 mt-1">
+              {errors.contact.number}
+            </p>
+          )}
           <br />
           <InputTextField
             value={formState.email}
-            handleChange={(value: any) => handleChange(value, "email")}
+            handleChange={(value: any) => {
+              handleChange(value, "email");
+              setErrors((prev) => ({ ...prev, email: null }));
+            }}
             placeholder="Email"
             type="email"
           />
+          {errors.email && (
+            <p className="text-wheelRed text-[13px] ml-2 mt-1">
+              {errors.email}
+            </p>
+          )}
           <br />
           <div className=" flex items-center gap-4">
             <Checkbox
@@ -66,6 +123,7 @@ export default function InfoForm() {
               onChange={(e) => {
                 handleChange(e.target.checked, "reciveGifts");
               }}
+              required
               pt={Tailwind.checkbox}
             />
             <label htmlFor="gift">

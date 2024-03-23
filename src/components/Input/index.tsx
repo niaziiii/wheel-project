@@ -18,7 +18,7 @@ export default function InputTextField({
       <InputText
         type={type}
         value={value}
-        className="w-full "
+        className="w-full !text-black "
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange(e.target.value)
         }

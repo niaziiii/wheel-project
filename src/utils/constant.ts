@@ -5,11 +5,11 @@ export interface ICountry {
 }
 
 export const countryData: ICountry[] = [
-  {
-    code: 0,
-    name: "+1",
-    path: "/country/us.png",
-  },
+  // {
+  //   code: 0,
+  //   name: "+1",
+  //   path: "/country/us.png",
+  // },
   {
     code: 0,
     name: "+33",

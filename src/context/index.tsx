@@ -46,7 +46,7 @@ const contextReducer = (state: AppState, action: Action): AppState => {
 
 const initialAppState: AppState = {
   loading: false,
-  country: countryData[1],
+  country: countryData[0],
   isModalOpen: true,
   isInfoModalOpen: true,
   contactNumber: "",

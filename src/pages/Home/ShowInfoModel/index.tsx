@@ -16,7 +16,7 @@ export default function ShowInfoModel({ close }: { close: () => void }) {
 
     setTimeout(() => {
       close();
-    }, 5000);
+    }, 20000);
   };
   return (
     <div className="fixed z-40 top-0 left-0 w-full h-screen min-h-screen flex items-center justify-center bg-[#00000066] text-black">
