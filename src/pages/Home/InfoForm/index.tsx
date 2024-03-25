@@ -4,6 +4,10 @@ import Dropdown from "./DropDown/";
 import { useAppContext, actionTypes } from "../../../context";
 import { Checkbox } from "primereact/checkbox";
 
+function validateEmail(email: any) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 const initialState = {
   firstName: "",
   email: "",
@@ -56,6 +60,10 @@ export default function InfoForm() {
       err.email = "Enter your email address";
       errors = true;
     }
+    if (!validateEmail(_formState.email)) {
+      err.email = "Enter a valid email address";
+      errors = true;
+    }
 
     if (!_formState.contactNumber) {
       err.contact.number = "Enter your number";
@@ -63,7 +71,7 @@ export default function InfoForm() {
     }
     let length = _formState.contactNumber?.length as any;
 
-    if (length < 8) {
+    if (length !== 10) {
       err.contact.number = "Enter your correct number";
       errors = true;
     }
