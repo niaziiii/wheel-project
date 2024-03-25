@@ -6,7 +6,7 @@ type AppState = {
   country: ICountry;
   isModalOpen: boolean;
   isInfoModalOpen: boolean;
-  contactNumber: string | number;
+  contactNumber: string;
   isWheelRunning: boolean;
 };
 
@@ -36,7 +36,7 @@ const contextReducer = (state: AppState, action: Action): AppState => {
     case actionTypes.SET_INFO_MODEL:
       return { ...state, isInfoModalOpen: action.payload as boolean };
     case actionTypes.SET_CONTAC_NUMBER:
-      return { ...state, contactNumber: action.payload as number };
+      return { ...state, contactNumber: action.payload as any };
     case actionTypes.SET_WHEEL:
       return { ...state, isWheelRunning: action.payload as boolean };
     default:

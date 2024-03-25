@@ -35,21 +35,46 @@ export default function InfoForm() {
   };
 
   const checkFieldsVerification = () => {
-    let err: any = { ...initialStateErrors };
-    let errors = false;
+    let err: any = {
+      firstName: null,
+      email: null,
+      contact: {
+        number: null,
+      },
+    };
 
-    if (!formState.firstName) {
+    let errors = false;
+    const _formState = {
+      ...formState,
+      contactNumber: state.contactNumber ?? ("" as string),
+    };
+    if (!_formState.firstName) {
       err.firstName = "Enter your name";
       errors = true;
     }
-    if (!formState.email) {
+    if (!_formState.email) {
       err.email = "Enter your email address";
       errors = true;
     }
-    if (!formState.contact.number) {
+
+    if (!_formState.contactNumber) {
       err.contact.number = "Enter your number";
       errors = true;
     }
+    let length = _formState.contactNumber?.length as any;
+
+    if (length < 8) {
+      err.contact.number = "Enter your correct number";
+      errors = true;
+    }
+
+    let contactNumber = _formState.contactNumber;
+
+    if (!contactNumber.startsWith("6") && !contactNumber.startsWith("7")) {
+      err.contact.number = "Enter your correct number format";
+      errors = true;
+    }
+
     setErrors(err);
     return errors;
   };
@@ -57,7 +82,6 @@ export default function InfoForm() {
   const submitHandler = (e: any) => {
     e?.preventDefault();
     const useCanNotPlay = checkFieldsVerification();
-    console.log({ useCanNotPlay });
 
     if (useCanNotPlay) return;
 
@@ -65,8 +89,11 @@ export default function InfoForm() {
       ...formState,
       contactNumber: state.contactNumber,
     };
-    console.log({ params, formState });
     dispatch({ type: actionTypes.SET_WHEEL, payload: true });
+
+    //reseting fields data
+    dispatch({ type: actionTypes.SET_CONTAC_NUMBER, payload: "" });
+    setFormState(initialState);
   };
 
   return (
