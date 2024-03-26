@@ -4,6 +4,12 @@ import Dropdown from "./DropDown/";
 import { useAppContext, actionTypes } from "../../../context";
 import { Checkbox } from "primereact/checkbox";
 
+function scrollToWrapper() {
+  const wrapperElement = document.getElementById("wrapper");
+  if (wrapperElement) {
+    wrapperElement.scrollIntoView({ behavior: "smooth" });
+  }
+}
 function validateEmail(email: any) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -71,7 +77,7 @@ export default function InfoForm() {
     }
     let length = _formState.contactNumber?.length as any;
 
-    if (length !== 10) {
+    if (length !== 9) {
       err.contact.number = "Enter your correct number";
       errors = true;
     }
@@ -102,6 +108,9 @@ export default function InfoForm() {
     //reseting fields data
     dispatch({ type: actionTypes.SET_CONTAC_NUMBER, payload: "" });
     setFormState(initialState);
+
+    // scroll to wheel
+    scrollToWrapper();
   };
 
   return (

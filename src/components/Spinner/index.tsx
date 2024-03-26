@@ -28,7 +28,7 @@ const WheelSpinner: React.FC = () => {
     dispatch({ type: actionTypes.SET_WHEEL, payload: false });
   };
   return (
-    <div id="wrapper" className="py-10">
+    <div id="wrapper" className="py-20">
       <div id="wheel-container">
         <div id="wheel">
           <div id="inner-wheel" style={{ transform: `rotate(${rotation}deg)` }}>
