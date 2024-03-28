@@ -3,34 +3,13 @@ import InputTextField from "../../../components/Input";
 import Dropdown from "./DropDown/";
 import { useAppContext, actionTypes } from "../../../context";
 import { Checkbox } from "primereact/checkbox";
-
-function scrollToWrapper() {
-  const wrapperElement = document.getElementById("wrapper");
-  if (wrapperElement) {
-    wrapperElement.scrollIntoView({ behavior: "smooth" });
-  }
-}
-function validateEmail(email: any) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-const initialState = {
-  firstName: "",
-  email: "",
-  contact: {
-    code: "",
-    number: "",
-  },
-  reciveGifts: false,
-};
-const initialStateErrors = {
-  firstName: null,
-  email: null,
-  contact: {
-    number: null,
-  },
-  reciveGifts: null,
-};
+import {
+  checkFieldsVerification,
+  initialState,
+  initialStateErrors,
+  scrollToWrapper,
+  sendWheelData,
+} from "../utils";
 
 export default function InfoForm() {
   const { state, dispatch } = useAppContext();
@@ -44,73 +23,29 @@ export default function InfoForm() {
     }));
   };
 
-  const checkFieldsVerification = () => {
-    let err: any = {
-      firstName: null,
-      email: null,
-      contact: {
-        number: null,
-      },
-    };
-
-    let errors = false;
-    const _formState = {
-      ...formState,
-      contactNumber: state.contactNumber ?? ("" as string),
-    };
-    if (!_formState.firstName) {
-      err.firstName = "Enter your name";
-      errors = true;
-    }
-    if (!_formState.email) {
-      err.email = "Enter your email address";
-      errors = true;
-    }
-    if (!validateEmail(_formState.email)) {
-      err.email = "Enter a valid email address";
-      errors = true;
-    }
-
-    if (!_formState.contactNumber) {
-      err.contact.number = "Enter your number";
-      errors = true;
-    }
-    let length = _formState.contactNumber?.length as any;
-
-    if (length !== 9) {
-      err.contact.number = "Enter your correct number";
-      errors = true;
-    }
-
-    let contactNumber = _formState.contactNumber;
-
-    if (!contactNumber.startsWith("6") && !contactNumber.startsWith("7")) {
-      err.contact.number = "Enter your correct number format";
-      errors = true;
-    }
-
-    setErrors(err);
-    return errors;
-  };
-
   const submitHandler = (e: any) => {
     e?.preventDefault();
-    const useCanNotPlay = checkFieldsVerification();
-
+    const useCanNotPlay = checkFieldsVerification(state, formState, setErrors);
     if (useCanNotPlay) return;
 
     const params = {
-      ...formState,
-      contactNumber: state.contactNumber,
+      name: formState.firstName,
+      email: formState.email,
+      receiveGift: formState.reciveGifts,
+      contact: `+33${state.contactNumber}`,
     };
+
     dispatch({ type: actionTypes.SET_WHEEL, payload: true });
 
-    //reseting fields data
+    //Sending data to api
+    sendWheelData(params);
+
+    //Scroll to wheel
+    scrollToWrapper();
+
+    //Resetting fields data
     dispatch({ type: actionTypes.SET_CONTAC_NUMBER, payload: "" });
     setFormState(initialState);
-
-    // scroll to wheel
-    scrollToWrapper();
   };
 
   return (
@@ -178,8 +113,7 @@ export default function InfoForm() {
           <div className="mt-5 w-full">
             <button
               onClick={submitHandler}
-              className="outline-none w-full text-white border-none bg-wheelRed hover:bg-wheelRed/80  py-3 px-5 rounded-lg"
-            >
+              className="outline-none w-full text-white border-none bg-wheelRed hover:bg-wheelRed/80  py-3 px-5 rounded-lg">
               Lancer la roue
             </button>
           </div>
