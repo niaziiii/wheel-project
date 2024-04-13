@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home/HomePage";
 import Info from "./pages/Info/InfoPage";
-import WiningPage from "./pages/Win/WinPage";
+import QrPage from "./pages/Qr/QrPage";
 
 export default function App() {
   return (
@@ -17,7 +17,7 @@ export default function App() {
           <Route path="/" element={<Outlet />}>
             <Route index element={<Home />} />
             <Route path="info" element={<Info />} />
-            <Route path="win" element={<WiningPage />} />
+            <Route path="qr" element={<QrPage />} />
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>

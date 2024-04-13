@@ -28,8 +28,10 @@ const WheelSpinner = () => {
 
   const stopWheel = () => {
     dispatch({ type: actionTypes.SET_WHEEL, payload: false });
+    setRotation(state.deg);
+
     setTimeout(() => {
-      navigate("/win", { state: { code: "spinner-2" } });
+      navigate("/Qr", { state: { code: "spinner" } });
     }, 2000);
   };
   return (
