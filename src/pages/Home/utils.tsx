@@ -125,3 +125,25 @@ export function scrollToWrapper() {
     wrapperElement.scrollIntoView({ behavior: "smooth" });
   }
 }
+
+export const handleEmail = async (emailjs, email, name, message) => {
+  const serviceId = "service_q3rakio";
+  const templateId = "template_ff1ady4";
+
+  const params = {
+    sendername: name,
+    to: email,
+    subject: "Big WIN",
+    replyto: "winnerwheelofficial@gmail.com",
+    message: message,
+  };
+
+  emailjs
+    .send(serviceId, templateId, params)
+    .then((res) => {
+      console.log({ res });
+    })
+    .catch((err) => {
+      console.log({ err });
+    });
+};

@@ -8,24 +8,28 @@ export const dataArea = {
     area: [40, 137],
     winPercentage: "20",
     gap: 20, // 0 - 20
+    gift: "pizza",
   },
   "2": {
     id: "une boisson",
     area: [138, 230],
     winPercentage: "10",
     gap: 30, // 20 - 30
+    gift: "burger",
   },
   "3": {
     id: "une dessert",
     area: [231, 315],
     winPercentage: "50",
     gap: 80, // 30-80
+    gift: "sandwich",
   },
   "4": {
     id: "1 Voyage A Ny",
     area: [316, 400],
     winPercentage: "20",
     gap: 100, // 80 - 100
+    gift: "a cup of tea",
   },
 };
 

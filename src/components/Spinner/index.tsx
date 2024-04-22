@@ -2,12 +2,14 @@ import "./style.css";
 import React, { useEffect, useState } from "react";
 import { useAppContext, actionTypes } from "../../context";
 import { useNavigate } from "react-router-dom";
+import useIsMobile from "../../utils/useIsMobile";
 
 const WheelSpinner = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const [rotation, setRotation] = useState(0);
   const animationSpeed = 2000;
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let animationInterval: any;
@@ -31,7 +33,7 @@ const WheelSpinner = () => {
     setRotation(state.deg);
 
     setTimeout(() => {
-      navigate("/Qr", { state: { code: "spinner" } });
+      if (isMobile) navigate("/Qr", { state: { code: "spinner" } });
     }, 2000);
   };
   return (

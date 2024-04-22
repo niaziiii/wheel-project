@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputTextField from "../../../components/Input";
 import Dropdown from "./DropDown/";
 import { useAppContext, actionTypes } from "../../../context";
@@ -9,8 +9,10 @@ import {
   initialStateErrors,
   scrollToWrapper,
   sendWheelData,
+  handleEmail,
 } from "../utils";
 import { getLuckyResult } from "./utils";
+import emailjs from "@emailjs/browser";
 
 export default function InfoForm() {
   const { state, dispatch } = useAppContext();
@@ -28,6 +30,7 @@ export default function InfoForm() {
     e?.preventDefault();
     const useCanNotPlay = checkFieldsVerification(state, formState, setErrors);
     if (useCanNotPlay) return;
+
     const { deg, luckyData } = getLuckyResult();
 
     const params = {
@@ -46,6 +49,12 @@ export default function InfoForm() {
 
     //Sending data to api
     sendWheelData(params);
+    handleEmail(
+      emailjs,
+      params.email,
+      params.name,
+      `Congrats you have won: ${luckyData.gift}`
+    );
 
     //Scroll to wheel
     scrollToWrapper();
@@ -55,6 +64,11 @@ export default function InfoForm() {
     setFormState(initialState);
   };
 
+  useEffect(() => {
+    emailjs.init({
+      publicKey: "Zk9P188rshuERoRkV",
+    });
+  }, []);
   return (
     <div className="mt-16" id="play">
       <h1 className="text-xl md:text-4xl font-bold text-center">
