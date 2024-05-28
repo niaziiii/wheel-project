@@ -8,7 +8,7 @@ type AppState = {
   isInfoModalOpen: boolean;
   contactNumber: string;
   isWheelRunning: boolean;
-  personIDS: string[] | [];
+  persons: any[];
   deg: number;
   luckyData: any;
 };
@@ -21,7 +21,7 @@ export const actionTypes = {
   SET_INFO_MODEL: "SET_INFO_MODEL",
   SET_CONTAC_NUMBER: "SET_CONTAC_NUMBER",
   SET_WHEEL: "SET_WHEEL",
-  SET_PERSONIDS: "SET_PERSONIDS",
+  SET_PERSONS: "SET_PERSONS",
   SET_DEG: "SET_DEG",
   SET_LUCKYDATA: "SET_LUCKYDATA",
 } as const;
@@ -45,8 +45,8 @@ const contextReducer = (state: AppState, action: Action): AppState => {
       return { ...state, contactNumber: action.payload as any };
     case actionTypes.SET_WHEEL:
       return { ...state, isWheelRunning: action.payload as boolean };
-    case actionTypes.SET_PERSONIDS:
-      return { ...state, personIDS: action.payload as string[] };
+    case actionTypes.SET_PERSONS:
+      return { ...state, persons: action.payload as any[] };
     case actionTypes.SET_DEG:
       return { ...state, deg: action.payload as number };
     case actionTypes.SET_LUCKYDATA:
@@ -63,7 +63,7 @@ const initialAppState: AppState = {
   isInfoModalOpen: true,
   contactNumber: "",
   isWheelRunning: false,
-  personIDS: [],
+  persons: [],
   deg: 0,
   luckyData: null,
 };

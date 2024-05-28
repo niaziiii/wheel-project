@@ -78,7 +78,10 @@ export const checkFieldsVerification = (state, formState, setErrors) => {
     ...formState,
     contactNumber: state.contactNumber ?? ("" as string),
   };
-  const fetchedContacts = state?.personIDS ?? [];
+
+  const fetchedPersons = state?.persons ?? [];
+  const fetchedContacts = fetchedPersons.map((d: any) => d.contact);
+  const fetchedEmails = fetchedPersons.map((d: any) => d.email);
 
   if (fetchedContacts.includes(`+33${state.contactNumber}`)) {
     err.contact.number = "Number is already used.";
@@ -90,6 +93,10 @@ export const checkFieldsVerification = (state, formState, setErrors) => {
   }
   if (!_formState.email) {
     err.email = "Enter your email address";
+    errors = true;
+  }
+  if (fetchedEmails.includes(_formState.email)) {
+    err.email = "Email is already used.";
     errors = true;
   }
   if (!validateEmail(_formState.email)) {

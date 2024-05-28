@@ -17,8 +17,7 @@ export default function Home() {
     getWheelData().then((res) => {
       if (res?.data && res?.data.length > 0) {
         const data = res.data;
-        const contacts = data.map((d: any) => d.contact);
-        dispatch({ type: actionTypes.SET_PERSONIDS, payload: contacts });
+        dispatch({ type: actionTypes.SET_PERSONS, payload: data });
       }
     });
   }, [state.isWheelRunning]);
