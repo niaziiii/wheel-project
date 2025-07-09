@@ -1,3 +1,5 @@
+import { __api_url, _app_token } from "../../utils/secrets";
+
 export const initialState = {
   firstName: "",
   email: "",
@@ -16,12 +18,40 @@ export const initialStateErrors = {
   reciveGifts: null,
 };
 
+export const checkUserExists = async (email, contact, wheelType) => {
+  try {
+    const response = await fetch(`${__api_url}/check-user`, {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        contact,
+        wheelType,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: _app_token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    throw error;
+  }
+};
+
 export const sendWheelData = (params: any) => {
-  fetch("https://backend-wheel.vercel.app/api/v1", {
+  fetch(__api_url, {
     method: "POST",
     body: JSON.stringify(params),
     headers: {
       "Content-Type": "application/json",
+      Authorization: _app_token,
     },
   })
     .then((response) => {
@@ -40,10 +70,11 @@ export const sendWheelData = (params: any) => {
 };
 export const getWheelData = async () => {
   try {
-    const response = await fetch("https://backend-wheel.vercel.app/api/v1", {
+    const response = await fetch(__api_url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: _app_token,
       },
     });
 
@@ -65,7 +96,13 @@ function validateEmail(email: any) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
-export const checkFieldsVerification = (state, formState, setErrors) => {
+
+export const checkFieldsVerification = async (
+  state,
+  formState,
+  setErrors,
+  wheelType = "home-page"
+) => {
   let err: any = {
     firstName: null,
     email: null,
@@ -74,32 +111,22 @@ export const checkFieldsVerification = (state, formState, setErrors) => {
     },
   };
   let errors = false;
+
   const _formState = {
     ...formState,
-    contactNumber: state.contactNumber ?? ("" as string),
+    contactNumber: state.contactNumber ?? "",
   };
 
-  const fetchedPersons = state?.persons ?? [];
-  const fetchedContacts = fetchedPersons.map((d: any) => d.contact);
-  const fetchedEmails = fetchedPersons.map((d: any) => d.email);
-
-  if (fetchedContacts.includes(`+33${state.contactNumber}`)) {
-    err.contact.number = "Number is already used.";
-    errors = true;
-  }
+  // Basic validation first
   if (!_formState.firstName) {
     err.firstName = "Enter your name";
     errors = true;
   }
+
   if (!_formState.email) {
     err.email = "Enter your email address";
     errors = true;
-  }
-  if (fetchedEmails.includes(_formState.email)) {
-    err.email = "Email is already used.";
-    errors = true;
-  }
-  if (!validateEmail(_formState.email)) {
+  } else if (!validateEmail(_formState.email)) {
     err.email = "Enter a valid email address";
     errors = true;
   }
@@ -107,19 +134,44 @@ export const checkFieldsVerification = (state, formState, setErrors) => {
   if (!_formState.contactNumber) {
     err.contact.number = "Enter your number";
     errors = true;
+  } else {
+    let length = _formState.contactNumber?.length;
+    if (length !== 9) {
+      err.contact.number = "Enter your correct number";
+      errors = true;
+    } else {
+      let contactNumber = _formState.contactNumber;
+      if (!contactNumber.startsWith("6") && !contactNumber.startsWith("7")) {
+        err.contact.number = "Enter your correct number format";
+        errors = true;
+      }
+    }
   }
-  let length = _formState.contactNumber?.length as any;
 
-  if (length !== 9) {
-    err.contact.number = "Enter your correct number";
-    errors = true;
-  }
+  // If basic validation passes, check server for existing user
+  if (!errors) {
+    try {
+      const contact = `+33${state.contactNumber}`;
+      const checkResult = await checkUserExists(
+        _formState.email,
+        contact,
+        wheelType
+      );
 
-  let contactNumber = _formState.contactNumber;
+      if (checkResult.exists) {
+        if (checkResult.conflictType == "contact") {
+          err.contact.number = checkResult.message;
+        }
 
-  if (!contactNumber.startsWith("6") && !contactNumber.startsWith("7")) {
-    err.contact.number = "Enter your correct number format";
-    errors = true;
+        if (checkResult.conflictType == "email") {
+          err.email = checkResult.message;
+        }
+        errors = true;
+      }
+    } catch (error) {
+      err.email = "Unable to verify user. Please try again.";
+      errors = true;
+    }
   }
 
   setErrors(err);

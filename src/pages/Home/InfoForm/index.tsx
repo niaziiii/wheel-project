@@ -13,62 +13,90 @@ import {
 } from "../utils";
 import { getLuckyResult } from "./utils";
 import emailjs from "@emailjs/browser";
+import { _email_public_key } from "../../../utils/secrets";
 
-export default function InfoForm() {
+export default function InfoForm({ pageUrlPath }: { pageUrlPath: string }) {
   const { state, dispatch } = useAppContext();
   const [formState, setFormState] = useState(initialState);
   const [errors, setErrors] = useState(initialStateErrors);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (data: any, key: string) => {
+  const handleChange = (data, key) => {
     setFormState((prev) => ({
       ...prev,
       [key]: data,
     }));
   };
 
-  const submitHandler = (e: any) => {
+  const submitHandler = async (e) => {
     e?.preventDefault();
-    const useCanNotPlay = checkFieldsVerification(state, formState, setErrors);
-    if (useCanNotPlay) return;
 
-    const { deg, luckyData } = getLuckyResult();
+    if (isSubmitting) return;
 
-    const params = {
-      wheelType: "home-page",
-      name: formState.firstName,
-      email: formState.email,
-      receiveGift: formState.reciveGifts,
-      contact: `+33${state.contactNumber}`,
-      refId: luckyData.id,
-      deg: deg,
-    };
+    setIsSubmitting(true);
 
-    dispatch({ type: actionTypes.SET_WHEEL, payload: true });
-    dispatch({ type: actionTypes.SET_DEG, payload: deg });
-    dispatch({ type: actionTypes.SET_LUCKYDATA, payload: luckyData });
+    try {
+      const wheelType = pageUrlPath;
+      const userCanNotPlay = await checkFieldsVerification(
+        state,
+        formState,
+        setErrors,
+        wheelType
+      );
 
-    //Sending data to api
-    sendWheelData(params);
-    handleEmail(
-      emailjs,
-      params.email,
-      params.name,
-      `Congrats you have won: ${luckyData.gift}`
-    );
+      if (userCanNotPlay) {
+        setIsSubmitting(false);
+        return;
+      }
 
-    //Scroll to wheel
-    scrollToWrapper();
+      const { deg, luckyData } = getLuckyResult();
 
-    //Resetting fields data
-    dispatch({ type: actionTypes.SET_CONTAC_NUMBER, payload: "" });
-    setFormState(initialState);
+      const params = {
+        wheelType: wheelType,
+        name: formState.firstName,
+        email: formState.email,
+        receiveGift: formState.reciveGifts,
+        contact: `+33${state.contactNumber}`,
+        refId: luckyData.id,
+        deg: deg,
+      };
+
+      dispatch({ type: actionTypes.SET_WHEEL, payload: true });
+      dispatch({ type: actionTypes.SET_DEG, payload: deg });
+      dispatch({ type: actionTypes.SET_LUCKYDATA, payload: luckyData });
+
+      // Sending data to api
+      sendWheelData(params);
+      handleEmail(
+        emailjs,
+        params.email,
+        params.name,
+        `Congrats you have won: ${luckyData.gift}`
+      );
+
+      // Scroll to wheel
+      scrollToWrapper();
+
+      // Resetting fields data
+      dispatch({ type: actionTypes.SET_CONTAC_NUMBER, payload: "" });
+      setFormState(initialState);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setErrors((prev: any) => ({
+        ...prev,
+        email: "An error occurred. Please try again.",
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
     emailjs.init({
-      publicKey: "Zk9P188rshuERoRkV",
+      publicKey: _email_public_key,
     });
-  }, []);
+  }, [_email_public_key]);
+
   return (
     <div className="mt-16" id="play">
       <h1 className="text-xl md:text-4xl font-bold text-center">
@@ -82,7 +110,7 @@ export default function InfoForm() {
           <InputTextField
             type="text"
             value={formState.firstName}
-            handleChange={(value: any) => {
+            handleChange={(value) => {
               handleChange(value, "firstName");
               setErrors((prev) => ({ ...prev, firstName: null }));
             }}
@@ -103,7 +131,7 @@ export default function InfoForm() {
           <br />
           <InputTextField
             value={formState.email}
-            handleChange={(value: any) => {
+            handleChange={(value) => {
               handleChange(value, "email");
               setErrors((prev) => ({ ...prev, email: null }));
             }}
@@ -134,9 +162,14 @@ export default function InfoForm() {
           <div className="mt-5 w-full">
             <button
               onClick={submitHandler}
-              className="outline-none w-full text-white border-none bg-wheelRed hover:bg-wheelRed/80  py-3 px-5 rounded-lg"
+              disabled={isSubmitting}
+              className={`outline-none w-full text-white border-none py-3 px-5 rounded-lg ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-wheelRed hover:bg-wheelRed/80"
+              }`}
             >
-              Lancer la roue
+              {isSubmitting ? "Vérification..." : "Lancer la roue"}
             </button>
           </div>
         </form>

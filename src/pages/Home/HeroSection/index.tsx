@@ -19,7 +19,7 @@ const HeroSection = () => {
               href="#play"
               className="md:text-xl outline-none border-none bg-wheelRed hover:bg-wheelRed/90  py-2 md:py-3 md:font-bold px-4 md:px-10 rounded-lg"
             >
-             Je veux jouer
+              Je veux jouer
             </a>
           </div>
         </div>
@@ -42,7 +42,7 @@ const AnimatedText = () => {
           className="w-[100%] m-w-[100%]"
         >
           <p>
-            <b className="text-wheelRed">100%</b> Gratuit! - Jeu {" "}
+            <b className="text-wheelRed">100%</b> Gratuit! - Jeu{" "}
             <b className="text-wheelRed">100%</b> Gratuit!{" "}
           </p>
         </marquee>

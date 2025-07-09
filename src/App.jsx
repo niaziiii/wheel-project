@@ -15,7 +15,9 @@ export default function App() {
       <div>
         <Routes>
           <Route path="/" element={<Outlet />}>
-            <Route index element={<Home />} />
+            <Route index element={<Home pageUrlPath="home-page" />} />
+            <Route path="/game-1" element={<Home pageUrlPath="game-1" />} />
+            <Route path="/game-2" element={<Home pageUrlPath="game-2" />} />
             <Route path="info" element={<Info />} />
             <Route path="qr" element={<QrPage />} />
             <Route path="*" element={<NoMatch />} />
